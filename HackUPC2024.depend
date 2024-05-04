@@ -1,4 +1,5 @@
 # depslib dependency file v1.0
-1714818733 source:c:\users\guill\documents\hackupc2024\main.cpp
+1714835861 source:c:\users\guill\documents\hackupc2024\main.cpp
 	<iostream>
+	<random>
 
