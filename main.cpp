@@ -1,5 +1,5 @@
 #include<iostream>
-#include<random>
+#include<windows.h>
 
 using namespace std;
 
@@ -34,7 +34,7 @@ void recorrerArbre(Node *pare){
     }
     //imprimirNode(pare);
 }
-void    checkS(char t[N][N],int a,int b,int *i){
+void checkS(char t[N][N],int a,int b,int *i){
     if(t[a][b]==t[a+1][b] && a<(N-1)){
         (*i)++;
         checkS(t,a+1,b,i);
@@ -163,70 +163,6 @@ int Enratlla3lliures(Node *node){
     return 0;
 }
 
-/* int Enratlla3lliures(Node *node){
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-            if(node->tauler[i][j]!='0'){
-                if(checkFila(node->tauler,i,j,3) && (j-1>0 && j+2<N)){
-                    if(node->tauler[i][j+2]=='0' && node->tauler[i+1][j+2]!='0' && i<N){
-                        if(node->tauler[i][j-2]=='0' && node->tauler[i+1][j-2]!='0'){
-                            return 1;
-                        }
-                    }
-                }
-                if(((node->tauler[i][j]==node->tauler[i+1][j+1] && node->tauler[i][j]==node->tauler[i-1][j-1]) || (node->tauler[i][j]==node->tauler[i+1][j-1] && node->tauler[i][j]==node->tauler[i-1][j+1])) && ((i+2<N && j+2<N) && (i-1>0 && j-1>0))){
-                    if((node->tauler[i+2][j+2]=='0' && node->tauler[i-2][j-2]=='0' && (node->tauler[i+3][j+2]!='0' || i+3<(N+1)) && (node->tauler[i-1][j-2]!='0'))){
-                        return 1;
-                    }
-                    else if(node->tauler[i+2][j-2]=='0' && node->tauler[i-2][j+2]=='0' && (node->tauler[i+3][j-2]!='0' || i+3<(N+1)) && (node->tauler[i-1][j+2]!='0')){
-                        return 1;
-                    }
-                }
-            }
-        }
-    }
-    return 0;
-} */
-
-/* int Enratlla3(Node *node){
-    int jug=0,pc=0;
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-            if(node->tauler[i][j]!='0'){
-                if(checkCol(node->tauler,i,j,3) && node->tauler[i-1][j]=='0'){
-                    if(node->tauler[i][j]=='2'){
-                        pc++;
-                    }
-                    else{
-                        jug++;
-                    }
-                }
-                else if((node->tauler[i][j]==node->tauler[i][j-1] && node->tauler[i][j]==node->tauler[i][j+1])){
-                    if(node->tauler[i][j-2]=='0' && node->tauler[i+1][j-2]!='0' && j-1>0 && i<N){
-                        if(node->tauler[i][j+2]=='0' && node->tauler[i+1][j+2]!='0'){
-                            if(node->tauler[i][j]=='2'){
-                                pc=INFTY;
-                            }
-                            else{
-                                jug=INFTY;
-                            }
-                        }
-                        else if(node->tauler[i][j]=='2'){
-                                pc++;
-                            }
-                            else{
-                                jug++;
-                            }
-                    }
-                }
-                //check col
-                //check fila
-                //check diag
-            }
-        }
-    }
-} */
-
 int Enratlla3(Node *node){ //Aquesta funció buscarà configuracions del tauler en les quals, hi ha tres peces alineades (vert, hortz o bé diag) les quals no estan delimitades per fitxes de l'adversari, ie estan lliures
     int jug=0,pc=0;
     for(int i=0;i<N;i++){       //CALDRIA MIRAR QUE LES DIRECCIONS ESTIGUESSIN BUIDES!!!! SINÓ, ELS TRES EN RATLLA NO VALEN TANT
@@ -262,40 +198,6 @@ int Enratlla3(Node *node){ //Aquesta funció buscarà configuracions del tauler en
     return jug-pc;
 }
 
-/* int Enratlla2(Node *p){
-    int jug=0,pc=0;
-    for(int i=0;i<N;i++){       //CALDRIA MIRAR QUE LES DIRECCIONS ESTIGUESSIN BUIDES!!!! SINÓ, ELS TRES EN RATLLA NO VALEN RES
-        for(int j=0;j<N;j++){
-            if(p->tauler[i][j]!='0'){
-                if(checkFila(p->tauler,i,j,3)){
-                    if(p->tauler[i][j]=='2'){
-                        pc++;
-                    }
-                    else{
-                        jug++;
-                    }
-                }
-                else if(checkCol(p->tauler,i,j,3)){
-                    if(p->tauler[i][j]=='2'){
-                        pc++;
-                    }
-                    else{
-                        jug++;
-                    }
-                }
-                else if(checkDiag(p->tauler,i,j,3)){
-                    if(p->tauler[i][j]=='2'){
-                        pc++;
-                    }
-                    else{
-                        jug++;
-                    }
-                }
-            }
-        }
-    }
-    return jug-pc;
-} */
 
 int assignavalor(Node *node,int valor){
     if(node->nivell%2==0){
@@ -305,33 +207,16 @@ int assignavalor(Node *node,int valor){
         return valor;
     }
 }
-int heuristica(Node *node,int pes_3ratlla/* ,int pes_2ratlla,int pes_1ratlla */){
-    //Bàsicament, la funció heurística és una funció que avalua el valor d'un node fulla donada una taula qualsevol.
-    //Aquest valor correspon a la resta entre el "potencial" del pc a fer 4 en ratlla menys el "potencial" del jugador a fer quatre en ratlla.
-    //Si al tauler ja hi ha un quatre en ratlla, el valor d'aquell node fulla prendrà un valor de INFTY o -INFTY en funció de si el quatre en
-    //ratlla és favorable a l'ordinador o al jugador respectivament. Si no existeixen quatres en ratlla hem de seguir un altre criteri per tal
-    //de poder evaluar el tauler. PRIMERA IDEA: Per totes i cadascuna de les fitxes del tauler caldria avaluar una funció "pes", que depenent
-    //de la fitxa avaluada, sumaria o restaria valor al node fulla. Aquesta funció "pes", miraria el "potencial" de la fitxa en concret i com
-    //aquesta pot generar quatres en ratlla. Una primera idea seria mirar al voltant d'aquesta fitxa (a les 8 caselles al voltant d'aquesta) i
-    //veure quantes n'hi ha de quin jugador i on estan col·locades. En funció de la col·locació d'aquestes fitxes adjacents calculariem el nombre
-    //de quatres en ratlla que hipotèticament es podrien formar. SEGONA IDEA: El pes o valor d'una única pesa al tauler depèn del seu entorn,
-    //i doncs aquest valor és una combinació lineal del nombre d'un en ratlla, de dos en ratlla i tres en ratlla del qual en forma part,
-    //caldria també tenir en compte el nombre de caselles que hi ha lliures al seu voltant i doncs son les múltiples direccions d'atac a la
-    //mateixa vegada. En aquesta valoració només entraran en consideració els un, dos i tres en ratlla que estiguin lliures per tots dos costats.
-    //Els coeficients d'aquesta combinació lineal seran variables que es podran anar canviant per tal d'obtenir una màquina més o menys agresiva.
-    //Diguem \alpha, \beta i \gamma.
-    if(Enratlla4(node) || Enratlla3lliures(node)){
-        return assignavalor(node,INFTY);
-    }
-    else{   //El tauler no conté cap quatre en ratlla i doncs hem de donar-li un valor en funció de la posició de les fitxes al tauler la funció
-            //pes que dona un resultat a aquesta configuració vull que tingui la forma |a*3enratlla(p,pes_3enratlla)+b*2enratlla(p,pes_2enratlla)
-            //+c*1enratlla(p,pes_1enratlla)|<INFTY (ATENCIÓ!!! Observem que aquesta funció de l'esquerra depèn nombre de fitxes al tauler i doncs
-            //tot i que el tauler estigui ple, aquest valor no pot superar INFTY). Caldria afegir una funció que mirés si existeixen tres fitxes
-            //al tauler alineades i que no estan envoltades per cap fitxa contraria, ja que en aquell cas és una situació win-win i se li hauria
-            //d'assignar la major puntuació (INFTY)
-        return assignavalor(node,pes_3ratlla*Enratlla3(node)/* +pes_2ratlla*Enratlla2(p)+pes_1ratlla*Enratlla1(p) */);
+int heuristica(Node *node, int pes_3ratlla /* ,int pes_2ratlla,int pes_1ratlla */) {
+    // Check if there is a win for either player
+    if (Enratlla4(node) || Enratlla3lliures(node)) {
+        return assignavalor(node, INFTY); // Return positive infinity if there is a win
+    } else {
+        // Calculate heuristic value based on the position of pieces on the board
+        return assignavalor(node, pes_3ratlla * Enratlla3(node)/* +pes_2ratlla*Enratlla2(p)+pes_1ratlla*Enratlla1(p) */);
     }
 }
+
 void copiaTauler(char t1[N][N],char t2[N][N]){  //copia el tauler del node 1 al node 2
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
@@ -478,54 +363,64 @@ void minimax(Node *pare){
     }
 }
 void dibuixarTauler(char t[N][N]){
-    printf("%c%c%c",201,205,205);
+    HANDLE h= GetStdHandle(STD_OUTPUT_HANDLE);
+    cout<< char(201)<< char(205)<< char(205);
 
     for(int i=0;i<(N-1);i++){
-        printf("%c%c%c%c",205,203,205,205);
+        cout<<char(205)<<char (203) << char(205)<<char(205);
     }
-    printf("%c%c\n",205,187);
+
+    cout<<char(205) << char(187)<< endl;
 
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
             switch(t[i][j]){
                 case '1':
-                    printf("%c%c%c%c",186,255,79,255);
+                    cout<<char(186)<<char(255);
+                    SetConsoleTextAttribute(h,2);
+                    cout<<char(79);
+                    SetConsoleTextAttribute(h,15);
+                    cout<<char(255);
                     break;
 
                 case '2':
-                    printf("%c%c%c%c",186,255,88,255);
+                    cout<< char(186)<<char(255);
+                    SetConsoleTextAttribute(h,4);
+                    cout<<char(88);
+                    SetConsoleTextAttribute(h,15);
+                    cout<<char(255);
                     break;
 
                 default:
-                    printf("%c%c%c%c",186,255,255,255);
+                    cout<<char(186)<<char(255)<<char(255)<<char(255);
                     break;
             }
         }
 
-        printf("%c\n",186);
+        cout<< char(186)<<endl;
 
         if(i==(N-1)){
-            printf("%c%c%c",200,205,205);
+            cout<<char(200)<<char(205)<<char(205);
             for(int i=0;i<(N-1);i++){
-                printf("%c%c%c%c",205,202,205,205);
+                cout<<char(205)<<char(202)<<char(205)<<char(205);
             }
-            printf("%c%c\n",205,188);
+            cout<<char(205)<<char(188)<<endl;
         }else{
-            printf("%c%c%c",204,205,205);
+            cout<<char(204)<<char(205)<<char(205);
             for(int i=0;i<(N-1);i++){
-                printf("%c%c%c%c",205,206,205,205);
+                cout<<char(205)<<char(206)<<char(205)<<char(205);
             }
-            printf("%c%c\n",205,185);
+            cout<<char(205)<<char(185)<<endl;
         }
     }
 
-    printf("%c%c",255,255);
+    cout<<char(255)<<char(255);
     for(int i=1;i<(N+1);i++){
-        printf("%d%c%c%c",i,255,255,255);
+        cout<<i<<char(255)<<char(255)<<char(255);
     }
-    printf("%c%c",255,255);
-    printf("\n");
+    cout<< char(255)<<char(255)<<endl;
 }
+
 int calculacol(Node *pare){
     for(int Fill=0;Fill<pare->n_fills;Fill++){
         if((pare->fills[Fill])->valor==pare->valor){
