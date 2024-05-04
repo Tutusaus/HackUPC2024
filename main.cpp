@@ -488,6 +488,14 @@ void checkD(char tauler[N][N], int fila, int col, int i, int j, bool *run) {
        *run = false;
     }
 }
+bool isValid(int x, int y) {
+    if(x>=0 and x<N) {
+        if(y>=0 and y<N) {
+            return true;
+        }
+    }
+    return false;
+}
 void check(char tauler[N][N], int col, bool *run) {
     int fila=0;
     while(tauler[fila][col] == '0') {
@@ -496,7 +504,8 @@ void check(char tauler[N][N], int col, bool *run) {
     for(int j=-1;j<2;j++) {
         for(int i=-1;i<2;i++) {
             if(i!=0 or j!=0) {
-                if(tauler[fila][col] == tauler[fila+j][col+i]) {
+                if(tauler[fila][col] == tauler[fila+j][col+i] and isValid(fila+j,col+i)) {
+                    cout << "Estem mirant la cela " << col+i << fila+j << endl;
                     checkD(tauler, fila, col, fila+j, col+i, run);
                 }
             }
