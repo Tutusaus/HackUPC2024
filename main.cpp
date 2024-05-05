@@ -478,12 +478,15 @@ void checkD(char tauler[N][N], int fila, int col, int i, int j, bool *run) {
     int direcx = i-fila;
     int direcy = j-col;
     //cout << tauler[fila][col] << tauler[i][j] << tauler[i+direcx][j+direcy] << tauler[i+2*direcx][j+2*direcy] << endl;
-    if(tauler[fila][col]==tauler[i+direcx][j+direcy] and tauler[fila][col]==tauler[i-direcx][j-direcy]) {
-        //cout << tauler[fila][col] << tauler[i+direcx][j+direcy] << tauler[i-direcx][j-direcy];
-        if(tauler[i+direcx][j+direcy]==tauler[i+2*direcx][j+2*direcy] or tauler[i-direcx][j-direcy]==tauler[i-2*direcx][j-2*direcy]) {
-            *run = false;
+
+    ////// ESTEM MIRANT BURRITOS ///////
+    if(tauler[fila][col]==tauler[fila-direcx][col-direcy]) {
+        if(tauler[fila][col]==tauler[i+direcx][j+direcy] or tauler[fila][col]==tauler[fila-2*direcx][col-2*direcy]) {
+            *run=false;
         }
     }
+
+    ////////////////////////////////////BUSQUEM EN RATLLES
     if(tauler[fila][col]==tauler[i+direcx][j+direcy] and tauler[fila][col]==tauler[i+2*direcx][j+2*direcy]) {
        *run = false;
     }
@@ -496,16 +499,22 @@ bool isValid(int x, int y) {
     }
     return false;
 }
-void check(char tauler[N][N], int col, bool *run) {
+
+int trobafila(char tauler[N][N], int col) {
     int fila=0;
     while(tauler[fila][col] == '0') {
-        fila++;
-    }
+            fila++;
+        }
+    return fila;
+}
+
+void check(char tauler[N][N], int col, bool *run) {
+    int fila=trobafila(tauler, col);
     for(int j=-1;j<2;j++) {
         for(int i=-1;i<2;i++) {
             if(i!=0 or j!=0) {
                 if(tauler[fila][col] == tauler[fila+j][col+i] and isValid(fila+j,col+i)) {
-                    cout << "Estem mirant la cela " << col+i << fila+j << endl;
+                    //cout << "Estem mirant la cela " << col+i << fila+j << endl;
                     checkD(tauler, fila, col, fila+j, col+i, run);
                 }
             }
